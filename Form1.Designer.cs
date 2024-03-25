@@ -28,7 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.AnT = new Tao.Platform.Windows.SimpleOpenGlControl();
+            this.RenderTimer = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // AnT
@@ -41,17 +44,34 @@
             this.AnT.BackColor = System.Drawing.Color.Black;
             this.AnT.ColorBits = ((byte)(32));
             this.AnT.DepthBits = ((byte)(16));
-            this.AnT.Location = new System.Drawing.Point(12, 12);
+            this.AnT.Location = new System.Drawing.Point(12, 42);
             this.AnT.Name = "AnT";
-            this.AnT.Size = new System.Drawing.Size(600, 600);
+            this.AnT.Size = new System.Drawing.Size(761, 680);
             this.AnT.StencilBits = ((byte)(0));
             this.AnT.TabIndex = 0;
+            this.AnT.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AnT_KeyDown);
+            // 
+            // RenderTimer
+            // 
+            this.RenderTimer.Interval = 30;
+            this.RenderTimer.Tick += new System.EventHandler(this.RenderTimer_Tick);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(833, 216);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Сесть";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1088, 630);
+            this.ClientSize = new System.Drawing.Size(1233, 765);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.AnT);
             this.Name = "Form1";
             this.Text = "Lifting Crane";
@@ -63,6 +83,8 @@
         #endregion
 
         private Tao.Platform.Windows.SimpleOpenGlControl AnT;
+        private System.Windows.Forms.Timer RenderTimer;
+        private System.Windows.Forms.Button button1;
     }
 }
 
