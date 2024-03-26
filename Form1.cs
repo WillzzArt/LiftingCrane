@@ -30,17 +30,23 @@ namespace LiftingCrane
             if (e.KeyCode == Keys.D)
                 _translateX -= 2;
 
+            if (e.KeyCode == Keys.Space)
+                _translateZ -= 2;
+
+            if (e.KeyCode == Keys.ShiftKey)
+                _translateZ += 2;
+
             if (e.KeyCode == Keys.E)
-                _rotateZ += 1;
+                _rotateZ += 2;
 
             if (e.KeyCode == Keys.Q)
-                _rotateZ -= 1;
+                _rotateZ -= 2;
 
             if (e.KeyCode == Keys.Z)
-                _rotateX += 1;
+                _rotateX += 2;
 
             if (e.KeyCode == Keys.X)
-                _rotateX -= 1;
+                _rotateX -= 2;
 
             if (_translateX < -3 && _translateX > -27 && _translateY < -78 && _translateY > -102)
                 button1.Visible = true;
