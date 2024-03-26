@@ -6,7 +6,23 @@ namespace LiftingCrane
 {
     internal static class ModelDrawer
     {
-        
+        static double[,] coordTravi = new double[2, 252];
+        static Random rnd = new Random();
+
+        static ModelDrawer()
+        {
+            for (int i = 0; i < coordTravi.GetLength(0); i++)
+            {
+                for (int j = 0; j < coordTravi.GetLength(1); j += 3)
+                { 
+                    var coord = rnd.Next(-92, 92);
+                    coordTravi[i, j] = coord;
+                    coordTravi[i, j + 1] = coord - rnd.Next(-7, -1);
+                    coordTravi[i, j + 2] = coord - rnd.Next(1, 7);
+                }
+            }
+        }
+
         public static void DrawEarth()
         {
 
@@ -21,22 +37,19 @@ namespace LiftingCrane
             Gl.glEnd();
             Gl.glPopMatrix();
 
-            /*Gl.glPushMatrix();
-            Gl.glColor3f(0, 0, 0);
+            //Отрисовка травы
+            Gl.glPushMatrix();
+            Gl.glColor3f(0.09f, 0.65f, 0.1f);
 
-            var rnd = new Random();
-
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < coordTravi.GetLength(1); i += 3)
             {
-                Gl.glBegin(Gl.GL_LINES);
-                int x = rnd.Next(-50, 50);
-                int y = x + rnd.Next(-50, +50);
-                Gl.glVertex3d(x, y, 0);
-                Gl.glVertex3d(x + 10, y, 0);
-                Gl.glVertex3d(x + 15, y, rnd.Next(2, 5));
+                Gl.glBegin(Gl.GL_TRIANGLE_FAN);
+                Gl.glVertex3d(coordTravi[0, i], coordTravi[1, i], -15);
+                Gl.glVertex3d(coordTravi[0, i + 1], coordTravi[1, i + 1], -15);
+                Gl.glVertex3d(coordTravi[0, i + 2], coordTravi[1, i + 2], rnd.Next(-13, -11));
 
                 Gl.glEnd();
-            }*/
+            }
 
             Gl.glPopMatrix();
 

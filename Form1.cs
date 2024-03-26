@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography;
 using System.Windows.Forms;
 using Tao.FreeGlut;
 using Tao.OpenGl;
@@ -10,26 +9,26 @@ namespace LiftingCrane
     {
         // вспомогательные переменные - в них будут хранится обработанные значения,
         // полученные при перетаскивании ползунков пользователем
-        double _translateX = 0, _translateY = 0, _translateZ = -20, zoom = 1; 
-        
+        double _translateX = 0, _translateY = 0, _translateZ = -20, zoom = 1;
+
         // оси вращения
         int _rotateX = -80, _rotateY = 0, _rotateZ = 0;
 
-        double[,] coord = new double[2, 64];
+        
 
         private void AnT_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.W)
-                _translateY -= 1;
+                _translateY -= 2;
 
             if (e.KeyCode == Keys.S)
-                _translateY += 1;
+                _translateY += 2;
 
             if (e.KeyCode == Keys.A)
-                _translateX += 1;
+                _translateX += 2;
 
             if (e.KeyCode == Keys.D)
-                _translateX -= 1;
+                _translateX -= 2;
 
             if (e.KeyCode == Keys.E)
                 _rotateZ += 1;
@@ -83,7 +82,7 @@ namespace LiftingCrane
             RenderTimer.Start();
         }
 
-        
+
 
         private void Draw()
         {
@@ -96,11 +95,11 @@ namespace LiftingCrane
 
             // помещаем состояние матрицы в стек матриц, дальнейшие трансформации затронут только визуализацию объекта
             Gl.glPushMatrix();
-            
+
             //Gl.glTranslated(_transleteX, _transleteY, _transleteZ);
             // поворот по установленной оси
-            Gl.glRotated(_rotateX, 1, 0, 0); 
-            Gl.glRotated(_rotateY, 0, 1, 0); 
+            Gl.glRotated(_rotateX, 1, 0, 0);
+            Gl.glRotated(_rotateY, 0, 1, 0);
             Gl.glRotated(_rotateZ, 0, 0, 1);
             // производим перемещение в зависимости от значений, полученных при перемещении ползунков
             Gl.glTranslated(_translateX, _translateY, _translateZ);
