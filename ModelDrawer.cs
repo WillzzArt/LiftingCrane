@@ -62,10 +62,227 @@ namespace LiftingCrane
         public static void DrawLiftingCrane()
         {
             DrawCraneFundament();
-            DrawFootingCrane(7);
+            DrawFootingCrane(5, 7);
             DrawCraneBoom(15);
-            DrawCabine();
             DrawCabineFundament();
+            DrawCraneTown();
+            DrawCraneCounterweight();
+
+            DrawCabine();
+        }
+
+        //Отрисовка противовеса для крана
+        private static void DrawCraneCounterweight()
+        {
+            Gl.glPushMatrix();
+            Gl.glColor3f(0.91f, 0.81f, 0.12f);
+            //Gl.glColor3f(0, 0, 0);
+
+            
+            //Основа
+            Gl.glPushMatrix();
+            Gl.glTranslated(15, 155, 230); // z = 213
+            Gl.glScaled(2, 11, 0.2);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            //Противовес
+            Gl.glPushMatrix();
+            Gl.glColor3f(0.55f, 0.55f, 0.55f);
+            Gl.glTranslated(15, 165, 232);
+            Gl.glScaled(1.5, 4.5, 0.4);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            //
+            //Перила
+            //
+
+            Gl.glPushMatrix();
+            Gl.glColor3f(0.91f, 0.81f, 0.12f);
+            Gl.glTranslated(5.65, 100.65, 238);
+            Gl.glScaled(0.13, 0.13, 1.5);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(24.35, 100.65, 238);
+            Gl.glScaled(0.13, 0.13, 1.5);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(5.65, 209.35, 238);
+            Gl.glScaled(0.13, 0.13, 1.5);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(24.35, 209.35, 238);
+            Gl.glScaled(0.13, 0.13, 1.5);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            //
+            //
+            //
+
+            Gl.glPushMatrix();
+            Gl.glColor3f(0.91f, 0.81f, 0.12f);
+            Gl.glTranslated(5.65, 136.88, 238);
+            Gl.glScaled(0.13, 0.13, 1.5);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(24.35, 136.88, 238);
+            Gl.glScaled(0.13, 0.13, 1.5);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(5.65, 173.11, 238);
+            Gl.glScaled(0.13, 0.13, 1.5);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(24.35, 173.11, 238);
+            Gl.glScaled(0.13, 0.13, 1.5);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            //
+            //Перекладины
+            //
+
+            for (int i = 238; i < 246; i += 7)
+            {
+                Gl.glPushMatrix();
+                Gl.glTranslated(5.65, 155, i);
+                Gl.glScaled(0.13, 11, 0.13);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(24.35, 155, i);
+                Gl.glScaled(0.13, 11, 0.13);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(15, 100.65, i);
+                Gl.glScaled(2, 0.13, 0.13);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(15, 209.35, i);
+                Gl.glScaled(2, 0.13, 0.13);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+            }
+            
+
+            Gl.glPopMatrix();
+        }
+
+        //Отрисовка башни крана
+        private static void DrawCraneTown()
+        {
+            Gl.glPushMatrix();
+            Gl.glColor3f(0.91f, 0.81f, 0.12f);
+            //Gl.glColor3f(0, 0, 0);
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(15, 90, 280);
+            Glut.glutSolidCube(2);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(10.2, 94.97, 255);
+            Gl.glRotated(11.7, 0, 1, 0);
+            Gl.glRotated(10.1, 1, 0, 0);
+            Gl.glScaled(0.1, 0.1, 5.2);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(10.2, 84.97, 255);
+            Gl.glRotated(11.7, 0, 1, 0);
+            Gl.glRotated(-10.1, 1, 0, 0);
+            Gl.glScaled(0.1, 0.1, 5.2);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(19.8, 84.97, 255);
+            Gl.glRotated(-11.7, 0, 1, 0);
+            Gl.glRotated(-10.1, 1, 0, 0);
+            Gl.glScaled(0.1, 0.1, 5.2);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(19.8, 94.97, 255);
+            Gl.glRotated(-11.7, 0, 1, 0);
+            Gl.glRotated(10.1, 1, 0, 0);
+            Gl.glScaled(0.1, 0.1, 5.2);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            //
+            //
+            //
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(15, 90, 230);
+            Gl.glScaled(2.5, 2.5, 0.15);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            //
+            //
+            //
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(15, 84.4, 252);
+            Gl.glRotated(-10.1, 1, 0, 0);
+            Gl.glScaled(1.1, 0.1, 0.1);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(15, 95.5, 252);
+            Gl.glRotated(10.1, 1, 0, 0);
+            Gl.glScaled(1.1, 0.1, 0.1);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(9.6, 90, 252);
+            Gl.glRotated(11.7, 0, 1, 0);
+            Gl.glScaled(0.1, 1.1, 0.1);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(20.4, 90, 252);
+            Gl.glRotated(-11.7, 0, 1, 0);
+            Gl.glScaled(0.1, 1.1, 0.1);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            //
+            Gl.glPushMatrix();
+            Gl.glTranslated(15, 83.2, 245);
+            Gl.glRotated(-10.1, 1, 0, 0);
+            Gl.glScaled(1.4, 0.1, 0.1);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            Gl.glPopMatrix();
+
         }
 
         //Отрисовка стрелы крана
@@ -76,25 +293,25 @@ namespace LiftingCrane
                 //Нижний квадрат
                 Gl.glPushMatrix();
                 Gl.glColor3f(0.91f, 0.81f, 0.12f);
-                Gl.glTranslated(5, i + 10, 213);
+                Gl.glTranslated(5, i + 10, 230);
                 Gl.glScaled(0.1, 2, 0.1);
                 Glut.glutSolidCube(10);
                 Gl.glPopMatrix();
 
                 Gl.glPushMatrix();
-                Gl.glTranslated(25, i + 10, 213);
+                Gl.glTranslated(25, i + 10, 230);
                 Gl.glScaled(0.1, 2, 0.1);
                 Glut.glutSolidCube(10);
                 Gl.glPopMatrix();
 
                 Gl.glPushMatrix();
-                Gl.glTranslated(15, i, 213);
+                Gl.glTranslated(15, i, 230);
                 Gl.glScaled(2, 0.1, 0.1);
                 Glut.glutSolidCube(10);
                 Gl.glPopMatrix();
 
                 Gl.glPushMatrix();
-                Gl.glTranslated(15, i + 20, 213);
+                Gl.glTranslated(15, i + 20, 230);
                 Gl.glScaled(2, 0.1, 0.1);
                 Glut.glutSolidCube(10);
                 Gl.glPopMatrix();
@@ -103,16 +320,28 @@ namespace LiftingCrane
                 //верхняя балка
                 //
 
-                Gl.glPushMatrix();
-                Gl.glTranslated(15, i + 15, 228);
-                Gl.glScaled(0.1, 1, 0.1);
-                Glut.glutSolidCube(10);
-                Gl.glPopMatrix();
+                if (i == 60)
+                {
+                    Gl.glPushMatrix();
+                    Gl.glTranslated(15, i + 15, 245);
+                    Gl.glScaled(0.1, 1.6, 0.1);
+                    Glut.glutSolidCube(10);
+                    Gl.glPopMatrix();
+                }
+                else
+                {
+                    Gl.glPushMatrix();
+                    Gl.glTranslated(15, i + 15, 245);
+                    Gl.glScaled(0.1, 1, 0.1);
+                    Glut.glutSolidCube(10);
+                    Gl.glPopMatrix();
+                }
+                
 
                 if (i > -20 * count + 81 + 20)
                 {
                     Gl.glPushMatrix();
-                    Gl.glTranslated(15, i + 5, 228);
+                    Gl.glTranslated(15, i + 5, 245);
                     Gl.glScaled(0.1, 1, 0.1);
                     Glut.glutSolidCube(10);
                     Gl.glPopMatrix();
@@ -124,7 +353,7 @@ namespace LiftingCrane
                 //
 
                 Gl.glPushMatrix();
-                Gl.glTranslated(10, i + 14.5, 220.5);
+                Gl.glTranslated(10, i + 14.5, 237.5);
                 Gl.glRotated(35, 0, 1, 0);
                 Gl.glRotated(28, 1, 0, 0);
                 Gl.glScaled(0.1, 0.1, 2.1);
@@ -132,7 +361,7 @@ namespace LiftingCrane
                 Gl.glPopMatrix();
 
                 Gl.glPushMatrix();
-                Gl.glTranslated(10, i + 5.5, 220.5);
+                Gl.glTranslated(10, i + 5.5, 237.5);
                 Gl.glRotated(35, 0, 1, 0);
                 Gl.glRotated(-28, 1, 0, 0);
                 Gl.glScaled(0.1, 0.1, 2.1);
@@ -140,7 +369,7 @@ namespace LiftingCrane
                 Gl.glPopMatrix();
 
                 Gl.glPushMatrix();
-                Gl.glTranslated(20, i + 14.5, 220.5);
+                Gl.glTranslated(20, i + 14.5, 237.5);
                 Gl.glRotated(-35, 0, 1, 0);
                 Gl.glRotated(28, 1, 0, 0);
                 Gl.glScaled(0.1, 0.1, 2.1);
@@ -148,7 +377,7 @@ namespace LiftingCrane
                 Gl.glPopMatrix();
 
                 Gl.glPushMatrix();
-                Gl.glTranslated(20, i + 5.5, 220.5);
+                Gl.glTranslated(20, i + 5.5, 237.5);
                 Gl.glRotated(-35, 0, 1, 0);
                 Gl.glRotated(-28, 1, 0, 0);
                 Gl.glScaled(0.1, 0.1, 2.1);
@@ -240,9 +469,11 @@ namespace LiftingCrane
             Gl.glPopMatrix();
         }
 
-        private static void DrawFootingCrane(int count)
+        //Отрисовка основания крана
+        private static void DrawFootingCrane(int start, int count)
         {
-            for (var i = 5; i < 30 * count + 6; i += 30)
+            Gl.glPushMatrix();
+            for (var i = start; i < 30 * count + start + 1; i += 30)
             {
                 Gl.glPushMatrix();
                 Gl.glColor3f(0.91f, 0.81f, 0.12f);
@@ -379,11 +610,10 @@ namespace LiftingCrane
 
                 Gl.glPopMatrix();
             }
-
-
-            
+            Gl.glPopMatrix();
         }
 
+        //Отрисовка фундамента кабины
         private static void DrawCabineFundament()
         {
             //фундамент
