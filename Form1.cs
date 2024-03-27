@@ -79,7 +79,7 @@ namespace LiftingCrane
             Gl.glLoadIdentity();
 
             // установка перспективы
-            Glu.gluPerspective(45, (float)AnT.Width / (float)AnT.Height, 0.1, 200);
+            Glu.gluPerspective(45, (float)AnT.Width / (float)AnT.Height, 0.1, 1000);
 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
             Gl.glLoadIdentity();

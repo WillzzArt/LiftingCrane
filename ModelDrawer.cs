@@ -63,15 +63,102 @@ namespace LiftingCrane
         {
             DrawCraneFundament();
             DrawFootingCrane(7);
-            DrawCabineFundament();
-
-            Gl.glPushMatrix();
-            Gl.glTranslated(-28, -5, 195);
+            DrawCraneBoom(15);
             DrawCabine();
-            Gl.glPopMatrix();
+            DrawCabineFundament();
+        }
+
+        //Отрисовка стрелы крана
+        private static void DrawCraneBoom(int count)
+        {
+            for (double i = 60; i > -20 * count + 81; i -= 20)
+            {
+                //Нижний квадрат
+                Gl.glPushMatrix();
+                Gl.glColor3f(0.91f, 0.81f, 0.12f);
+                Gl.glTranslated(5, i + 10, 213);
+                Gl.glScaled(0.1, 2, 0.1);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(25, i + 10, 213);
+                Gl.glScaled(0.1, 2, 0.1);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(15, i, 213);
+                Gl.glScaled(2, 0.1, 0.1);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(15, i + 20, 213);
+                Gl.glScaled(2, 0.1, 0.1);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+
+                //
+                //верхняя балка
+                //
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(15, i + 15, 228);
+                Gl.glScaled(0.1, 1, 0.1);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+
+                if (i > -20 * count + 81 + 20)
+                {
+                    Gl.glPushMatrix();
+                    Gl.glTranslated(15, i + 5, 228);
+                    Gl.glScaled(0.1, 1, 0.1);
+                    Glut.glutSolidCube(10);
+                    Gl.glPopMatrix();
+                }
+                
+
+                //
+                //Опоры
+                //
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(10, i + 14.5, 220.5);
+                Gl.glRotated(35, 0, 1, 0);
+                Gl.glRotated(28, 1, 0, 0);
+                Gl.glScaled(0.1, 0.1, 2.1);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(10, i + 5.5, 220.5);
+                Gl.glRotated(35, 0, 1, 0);
+                Gl.glRotated(-28, 1, 0, 0);
+                Gl.glScaled(0.1, 0.1, 2.1);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(20, i + 14.5, 220.5);
+                Gl.glRotated(-35, 0, 1, 0);
+                Gl.glRotated(28, 1, 0, 0);
+                Gl.glScaled(0.1, 0.1, 2.1);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(20, i + 5.5, 220.5);
+                Gl.glRotated(-35, 0, 1, 0);
+                Gl.glRotated(-28, 1, 0, 0);
+                Gl.glScaled(0.1, 0.1, 2.1);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+            }
             
 
         }
+
 
         //Отрисовка кабины
         private static void DrawCabine()
@@ -79,14 +166,14 @@ namespace LiftingCrane
             //Пол
             Gl.glPushMatrix();
             Gl.glColor3f(0.81f, 0.81f, 0.81f);
-            Gl.glTranslated(15, 90, -4);
+            Gl.glTranslated(-13, 85, 191);
             Gl.glScaled(3.5, 3.5, 0.25);
             Glut.glutSolidCube(10);
             Gl.glPopMatrix();
 
             //Задняя стена
             Gl.glPushMatrix();
-            Gl.glTranslated(15, 107, 13);
+            Gl.glTranslated(-13, 102, 208);
             Gl.glRotated(90, 1, 0, 0);
             Gl.glScaled(3.5, 3.5, 0.25);
             Glut.glutSolidCube(10);
@@ -95,7 +182,7 @@ namespace LiftingCrane
             //Боковые стены
             Gl.glPushMatrix();
             Gl.glColor3f(0, 0, 0);
-            Gl.glTranslated(-1.5, 90, 4);
+            Gl.glTranslated(-29.5, 85, 199);
             Gl.glRotated(90, 1, 0, 0);
             Gl.glRotated(90, 0, 1, 0);
             Gl.glScaled(3.2, 1.5, 0.25);
@@ -103,7 +190,7 @@ namespace LiftingCrane
             Gl.glPopMatrix();
 
             Gl.glPushMatrix();
-            Gl.glTranslated(31.5, 90, 4);
+            Gl.glTranslated(3.5, 85, 199);
             Gl.glRotated(90, 1, 0, 0);
             Gl.glRotated(90, 0, 1, 0);
             Gl.glScaled(3.2, 1.5, 0.25);
@@ -112,7 +199,7 @@ namespace LiftingCrane
 
             //Передняя стена
             Gl.glPushMatrix();
-            Gl.glTranslated(15, 73, 4);
+            Gl.glTranslated(-13, 68, 199);
             Gl.glRotated(90, 1, 0, 0);
             Gl.glScaled(3.55, 1.5, 0.25);
             Glut.glutSolidCube(10);
@@ -121,7 +208,7 @@ namespace LiftingCrane
             //Крыша
             Gl.glPushMatrix();
             Gl.glColor3f(0.81f, 0.81f, 0.81f);
-            Gl.glTranslated(15, 90, 31);
+            Gl.glTranslated(-13, 85, 226);
             Gl.glScaled(3.6, 3.6, 0.25);
             Glut.glutSolidCube(10);
             Gl.glPopMatrix();
@@ -129,13 +216,13 @@ namespace LiftingCrane
             //Опоры
             Gl.glPushMatrix();
             Gl.glColor3f(0, 0, 0);
-            Gl.glTranslated(-1.5, 73, 21);
+            Gl.glTranslated(-29.5, 68, 216);
             Gl.glScaled(0.25, 0.25, 1.9);
             Glut.glutSolidCube(10);
             Gl.glPopMatrix();
 
             Gl.glPushMatrix();
-            Gl.glTranslated(31.5, 73, 21);
+            Gl.glTranslated(3.5, 68, 216);
             Gl.glScaled(0.25, 0.25, 1.9);
             Glut.glutSolidCube(10);
             Gl.glPopMatrix();
@@ -152,6 +239,7 @@ namespace LiftingCrane
             Glut.glutSolidCube(10);
             Gl.glPopMatrix();
         }
+
         private static void DrawFootingCrane(int count)
         {
             for (var i = 5; i < 30 * count + 6; i += 30)
@@ -476,9 +564,10 @@ namespace LiftingCrane
             Gl.glPopMatrix();
         }
 
+        
 
         //Отрисовка пирамиды
-        private static void DrawPiramide()
+        /*private static void DrawPiramide()
         {
             Gl.glPushMatrix();
 
@@ -520,11 +609,9 @@ namespace LiftingCrane
 
             Gl.glEnd();
             Gl.glPopMatrix();
-        }
-        //Отрисовка стрелы крана
-        private static void DrawCraneBoom()
-        {
+        }*/
 
-        }
+
+        
     }
 }
