@@ -9,7 +9,6 @@ namespace LiftingCrane
         //Массив содержащий координаты травы
         static double[,] gressCoord = new double[2, 252];
         static Random rnd = new Random();
-        static int height = 0;
         static ModelDrawer()
         {
             //Инициализация массива
@@ -17,7 +16,7 @@ namespace LiftingCrane
             {
                 for (int j = 0; j < gressCoord.GetLength(1); j += 3)
                 { 
-                    var coord = rnd.Next(-92, 92);
+                    var coord = rnd.Next(-192, 192);
                     gressCoord[i, j] = coord;
                     gressCoord[i, j + 1] = coord - rnd.Next(-7, -1);
                     gressCoord[i, j + 2] = coord - rnd.Next(1, 7);
@@ -32,10 +31,10 @@ namespace LiftingCrane
             Gl.glPushMatrix();
             Gl.glColor3f(0.12f, 0.97f, 0.13f);
             Gl.glBegin(Gl.GL_TRIANGLE_FAN);
-            Gl.glVertex3d(-100, 100, -15);
-            Gl.glVertex3d(100, 100, -15);
-            Gl.glVertex3d(100, -100, -15);
-            Gl.glVertex3d(-100, -100, -15);
+            Gl.glVertex3d(-200, 200, -15);
+            Gl.glVertex3d(200, 200, -15);
+            Gl.glVertex3d(200, -200, -15);
+            Gl.glVertex3d(-200, -200, -15);
             Gl.glEnd();
             Gl.glPopMatrix();
 
@@ -59,16 +58,28 @@ namespace LiftingCrane
         }
 
         //Отрисовка крана
-        public static void DrawLiftingCrane()
+        public static void DrawLiftingCrane(double angle)
         {
+            double centerX = 15, centerY = 90, centerZ = -255;
+
             DrawCraneFundament();
-            DrawFootingCrane(5, 7);
+
+            DrawFootingCrane(156, 2);
+            Gl.glPushMatrix();
+            Gl.glTranslated(centerX, centerY, centerZ);
+            Gl.glRotated(angle, 0, 0, 1);
+            Gl.glTranslated(-centerX, -centerY, -centerZ);
+            Gl.glPushMatrix();
             DrawCraneBoom(15);
-            DrawCabineFundament();
             DrawCraneTown();
             DrawCraneCounterweight();
-
             DrawCabine();
+            Gl.glPopMatrix();
+            Gl.glPopMatrix();
+
+            DrawFootingCrane(5, 5);
+            DrawCabineFundament();
+
         }
 
         //Отрисовка противовеса для крана
