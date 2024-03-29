@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Tao.DevIl;
 using Tao.FreeGlut;
 using Tao.OpenGl;
 
@@ -15,10 +16,12 @@ namespace LiftingCrane
         double _rotateX = -80, _rotateY = 0, _rotateZ = 0;
 
         double angle = 0;
+        double translateTralley = 0;
         bool isInCrane = false;
         double angleCam = 0.0;
         double camSpeed = 0.0175;
 
+        
 
         public Form1()
         {
@@ -26,7 +29,6 @@ namespace LiftingCrane
             AnT.InitializeContexts();
         }
 
-        
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -96,6 +98,8 @@ namespace LiftingCrane
             label4.Text = _translateZ.ToString();
             label9.Text = _rotateX.ToString();
             label14.Text = angle.ToString();
+            label15.Text = translateTralley.ToString();
+            
 
             if (!isInCrane)
             {
@@ -127,12 +131,6 @@ namespace LiftingCrane
                 if (e.KeyCode == Keys.Q)
                     _rotateZ -= 2;
 
-                if (e.KeyCode == Keys.Z)
-                    _rotateX += 2;
-
-                if (e.KeyCode == Keys.X)
-                    _rotateX -= 2;
-
                 if (_translateX < -3 && _translateX > -27 && _translateY < -78 && _translateY > -102)
                     button1.Visible = true;
                 else
@@ -159,6 +157,22 @@ namespace LiftingCrane
                         _rotateZ += 1;
                 }
 
+                if (e.KeyCode == Keys.W)
+                {
+                    if (translateTralley <= -200)
+                        translateTralley = -200;
+                    else
+                        translateTralley -= 2;
+                }
+
+                if (e.KeyCode == Keys.S)
+                {
+                    if (translateTralley >= 22)
+                        translateTralley = 22;
+                    else
+                        translateTralley += 2;
+                }
+
                 if (comboBox1.SelectedIndex == 0)
                 {
                     double centerX = -15;
@@ -169,24 +183,22 @@ namespace LiftingCrane
                     _translateX = centerX + radius * Math.Cos(angleCam);
                     _translateY = centerY + radius * Math.Sin(angleCam);
                 }
-                /*else if (comboBox1.SelectedIndex == 1)
+
+                if (comboBox1.SelectedIndex == 2)
                 {
-                    _translateX = -16;
-                    _translateY = -90;
-                }*/
-                /*else
-                {
-                    _translateX = 96;
-                    _translateY = -222;
-                }*/
+                    if (e.KeyCode == Keys.E)
+                        _rotateZ += 2;
 
-
-                if (e.KeyCode == Keys.Z)
-                    _rotateX += 2;
-
-                if (e.KeyCode == Keys.X)
-                    _rotateX -= 2;
+                    if (e.KeyCode == Keys.Q)
+                        _rotateZ -= 2;
+                }
             }
+
+            if (e.KeyCode == Keys.Z)
+                _rotateX += 2;
+
+            if (e.KeyCode == Keys.X)
+                _rotateX -= 2;
 
         }
 
@@ -197,6 +209,10 @@ namespace LiftingCrane
             // инициализация режима экрана
             Glut.glutInitDisplayMode(Glut.GLUT_RGB | Glut.GLUT_DOUBLE);
 
+            // инициализация библиотеки OpenIL
+            Il.ilInit();
+            Il.ilEnable(Il.IL_ORIGIN_SET);
+
             // установка цвета очистки экрана (RGBA)
             Gl.glClearColor(255, 255, 255, 1);
 
@@ -205,11 +221,15 @@ namespace LiftingCrane
 
             // активация проекционной матрицы
             Gl.glMatrixMode(Gl.GL_PROJECTION);
+
+            Gl.glEnable(Gl.GL_BLEND);
+            Gl.glEnable(Gl.GL_DEPTH_TEST);
+
             // очистка матрицы
             Gl.glLoadIdentity();
 
             // установка перспективы
-            Glu.gluPerspective(45, (float)AnT.Width / (float)AnT.Height, 0.1, 1000);
+            Glu.gluPerspective(45, (float)AnT.Width / (float)AnT.Height, 0.6, 1000);
 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
             Gl.glLoadIdentity();
@@ -245,8 +265,8 @@ namespace LiftingCrane
             Gl.glPushMatrix();
 
             ModelDrawer.DrawEarth();
-            ModelDrawer.DrawLiftingCrane(-angle);
-
+            ModelDrawer.DrawLiftingCrane(-angle, translateTralley);
+            ModelDrawer.DrawWalls();
 
             Gl.glPopMatrix();
             Gl.glFlush();
