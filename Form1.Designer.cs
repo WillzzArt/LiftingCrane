@@ -48,6 +48,15 @@
             this.button2 = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.обАвтореToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.управлениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button3 = new System.Windows.Forms.Button();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.button4 = new System.Windows.Forms.Button();
+            this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // AnT
@@ -236,11 +245,78 @@
             this.label14.TabIndex = 19;
             this.label14.Text = "label14";
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.оПрограммеToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1233, 24);
+            this.menuStrip1.TabIndex = 20;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // оПрограммеToolStripMenuItem
+            // 
+            this.оПрограммеToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.обАвтореToolStripMenuItem,
+            this.управлениеToolStripMenuItem});
+            this.оПрограммеToolStripMenuItem.Name = "оПрограммеToolStripMenuItem";
+            this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
+            this.оПрограммеToolStripMenuItem.Text = "О программе";
+            // 
+            // обАвтореToolStripMenuItem
+            // 
+            this.обАвтореToolStripMenuItem.Name = "обАвтореToolStripMenuItem";
+            this.обАвтореToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.обАвтореToolStripMenuItem.Text = "Об авторе";
+            // 
+            // управлениеToolStripMenuItem
+            // 
+            this.управлениеToolStripMenuItem.Name = "управлениеToolStripMenuItem";
+            this.управлениеToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.управлениеToolStripMenuItem.Text = "Управление";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(1003, 339);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(122, 23);
+            this.button3.TabIndex = 21;
+            this.button3.Text = "Изменить фрактал";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(1003, 368);
+            this.trackBar1.Maximum = 20;
+            this.trackBar1.Minimum = 12;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(122, 45);
+            this.trackBar1.TabIndex = 22;
+            this.trackBar1.Value = 20;
+            this.trackBar1.Visible = false;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(1023, 419);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 23;
+            this.button4.Text = "Отмена";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Visible = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1233, 765);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.trackBar1);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.button2);
@@ -259,9 +335,14 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.AnT);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Lifting Crane";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -288,6 +369,13 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem оПрограммеToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem обАвтореToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem управлениеToolStripMenuItem;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Button button4;
     }
 }
 

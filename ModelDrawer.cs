@@ -68,8 +68,6 @@ namespace LiftingCrane
         {
             Gl.glEnable(Gl.GL_TEXTURE_2D);
 
-            
-
             var angle = 0;
             for (int i = 0; i < 5; i++)
             {
@@ -884,54 +882,49 @@ namespace LiftingCrane
             Gl.glPopMatrix();
         }
 
-        
-
-        //Отрисовка пирамиды
-        /*private static void DrawPiramide()
+        public static void DrawWallsWithFractal()
         {
             Gl.glPushMatrix();
+            Gl.glColor3f(0.46f, 0.44f, 0.40f);
+            Gl.glTranslated(100, 30, 12);
+            Gl.glRotated(-45, 0, 0, 1);
+            Gl.glScaled(7, 0.4, 5.2);
+            Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+        }
 
-            // Рисуем усеченную пирамиду
-            Gl.glBegin(Gl.GL_QUADS);
-
-            // Нижнее основание
-            Gl.glVertex3d(-2, -2, -2);
-            Gl.glVertex3d(2, -2, -2);
-            Gl.glVertex3d(2, 2, -2);
-            Gl.glVertex3d(-2, 2, -2);
-
-            // Верхнее основание
-            Gl.glVertex3d(-1, -1, 2);
-            Gl.glVertex3d(1, -1, 2);
-            Gl.glVertex3d(1, 1, 2);
-            Gl.glVertex3d(-1, 1, 2);
-
-            // Боковые грани
-            Gl.glVertex3d(-2, -2, -2);
-            Gl.glVertex3d(-1, -1, 2);
-            Gl.glVertex3d(1, -1, 2);
-            Gl.glVertex3d(2, -2, -2);
-
-            Gl.glVertex3d(2, -2, -2);
-            Gl.glVertex3d(1, -1, 2);
-            Gl.glVertex3d(1, 1, 2);
-            Gl.glVertex3d(2, 2, -2);
-
-            Gl.glVertex3d(2, 2, -2);
-            Gl.glVertex3d(1, 1, 2);
-            Gl.glVertex3d(-1, 1, 2);
-            Gl.glVertex3d(-2, 2, -2);
-
-            Gl.glVertex3d(-2, 2, -2);
-            Gl.glVertex3d(-1, 1, 2);
-            Gl.glVertex3d(-1, -1, 2);
-            Gl.glVertex3d(-2, -2, -2);
-
+        public static void DrawBineryTree(double size)
+        {
+            Gl.glPushMatrix();
+            Gl.glColor3f(0.97f, 0.75f, 0.13f);
+            Gl.glTranslated(98, 28, -10);
+            Gl.glRotated(90, 1, 0, 0);
+            Gl.glRotated(-45, 0, 1, 0);
+            Gl.glLineWidth(2);
+            Gl.glScaled(0.55, 0.55, 1);
+            Gl.glBegin(Gl.GL_LINES);
+            CalculateBineryTree(0, 0, 20, 0, size);
             Gl.glEnd();
             Gl.glPopMatrix();
-        }*/
+        }
+
+        private static void CalculateBineryTree(double x, double y, int length, int angle, double size)
+        {
+            double x1, y1;
+            x1 = x + length * Math.Sin(angle * 2 * Math.PI / 360.0);
+            y1 = y + length * Math.Cos(angle * 2 * Math.PI / 360.0);
+            Gl.glVertex2d(x, y);
+            Gl.glVertex2d(x1, y1);
+
+            if (length > 2)
+            {
+                CalculateBineryTree(x1, y1, (int)(length / size), angle + 40, size);
+                CalculateBineryTree(x1, y1, (int)(length / size), angle - 40, size);
+                CalculateBineryTree(x1, y1, (int)(length / size), angle + 10, size);
+            }
 
 
-        
+        }
+
     }
 }

@@ -20,6 +20,7 @@ namespace LiftingCrane
         bool isInCrane = false;
         double angleCam = 0.0;
         double camSpeed = 0.0175;
+        double sizeFractal = 1.2;
 
         
 
@@ -77,6 +78,25 @@ namespace LiftingCrane
 
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            button3.Visible = false;
+            trackBar1.Visible = true;
+            button4.Visible = true;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            button3.Visible = true;
+            trackBar1.Visible = false;
+            button4.Visible = false;
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            sizeFractal = (double)trackBar1.Value / 10;
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
             isInCrane = false;
@@ -98,7 +118,6 @@ namespace LiftingCrane
             label4.Text = _translateZ.ToString();
             label9.Text = _rotateX.ToString();
             label14.Text = angle.ToString();
-            label15.Text = translateTralley.ToString();
             
 
             if (!isInCrane)
@@ -267,6 +286,9 @@ namespace LiftingCrane
             ModelDrawer.DrawEarth();
             ModelDrawer.DrawLiftingCrane(-angle, translateTralley);
             ModelDrawer.DrawWalls();
+            ModelDrawer.DrawWallsWithFractal();
+            ModelDrawer.DrawBineryTree(sizeFractal);
+            
 
             Gl.glPopMatrix();
             Gl.glFlush();
