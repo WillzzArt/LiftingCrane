@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiftingCrane.Animation;
+using System;
 using Tao.FreeGlut;
 using Tao.OpenGl;
 
@@ -15,7 +16,7 @@ namespace LiftingCrane
         static uint bricks = 0;
         static uint[] cargos = new uint[3];
 
-        static ModelDrawer()
+        /*static ModelDrawer()
         {
             //Инициализация массива
             for (int i = 0; i < gressCoord.GetLength(0); i++)
@@ -34,8 +35,30 @@ namespace LiftingCrane
             cargos[0] = TextureMaker.LoadTexture("bricks.jpg");
             cargos[1] = TextureMaker.LoadTexture("concrete.jpg");
             cargos[2] = TextureMaker.LoadTexture("bricks.jpg");
-        }
+        }*/
 
+        //Инициализация переменных класса
+        public static void InitModelDrawer()
+        {
+            //Инициализация массива с координатами травы
+            for (int i = 0; i < gressCoord.GetLength(0); i++)
+            {
+                for (int j = 0; j < gressCoord.GetLength(1); j += 3)
+                {
+                    var coord = rnd.Next(-452, 452);
+                    gressCoord[i, j] = coord;
+                    gressCoord[i, j + 1] = coord - rnd.Next(-7, -1);
+                    gressCoord[i, j + 2] = coord - rnd.Next(1, 7);
+                }
+            }
+            
+            //Инициализация текстур
+            walls1 = TextureMaker.LoadTexture("fon1.jpg");
+            walls2 = TextureMaker.LoadTexture("fon2.jpg");
+            cargos[0] = TextureMaker.LoadTexture("bricks.jpg");
+            cargos[1] = TextureMaker.LoadTexture("concrete.jpg");
+            cargos[2] = TextureMaker.LoadTexture("bricks.jpg");
+        }
         private static void DrawTexture()
         {
             Gl.glBegin(Gl.GL_QUADS);
@@ -115,7 +138,7 @@ namespace LiftingCrane
         }
 
         //Отрисовка крана
-        public static void DrawLiftingCrane(double angle, double translateTralley, double cableHeight, bool isTakedCargo)
+        public static void DrawLiftingCrane(double angle, double translateTralley, double cableHeight, CargoStatus cargoStatus)
         {
             double centerX = 15, centerY = 90, centerZ = -255;
             Gl.glPushMatrix();
@@ -141,7 +164,7 @@ namespace LiftingCrane
             DrawCraneCounterweight();
             DrawCabine();
 
-            if (isTakedCargo)
+            if (cargoStatus == CargoStatus.Taked)
             {
                 Gl.glPushMatrix();
                 Gl.glTranslated(15, translateTralley + 20, 218 - cableHeight*10);

@@ -1,6 +1,7 @@
-﻿using LiftingCrane.Filter;
+﻿using LiftingCrane.Animation;
+using LiftingCrane.Filter;
 using System;
-using System.Drawing;
+using System.Media;
 using System.Windows.Forms;
 using Tao.DevIl;
 using Tao.FreeGlut;
@@ -8,25 +9,39 @@ using Tao.OpenGl;
 
 namespace LiftingCrane
 {
+
     public partial class Form1 : Form
     {
         // вспомогательные переменные - в них будут хранится обработанные значения,
         // полученные при перетаскивании ползунков пользователем
         double _translateX = 0, _translateY = 0, _translateZ = -20, zoom = 1;
-
+        float _globalTime = 0;
         // оси вращения
         double _rotateX = -80, _rotateY = 0, _rotateZ = 0;
 
         double angle = 0;
-        double translateTralley = 0;
-        bool isInCrane = false;
-        double angleCam = 0.0;
-        double camSpeed = 0.0175;
-        double sizeFractal = 1.2;
-        double cableHeight = 1;
-        bool isTakedCargo = false;
+        double _translateTralley = 0;
+        double _angleCam = 0.0;
+        double _camSpeed = 0.0175;
+        double _sizeFractal = 1.2;
+        double _cableHeight = 1;
+
+        bool _isBoom = false;
+        bool _isInCrane = false;
+
+        CargoStatus cargoStatus;
+
+        /*bool _isTakedCargo = false;
+        bool _isAbondonedCargo = false;
+        bool _isFalledCargo = false;*/
+
+        CargoAnimation cargo;
+
+        private Explosion BOOOOM_1 = new Explosion(1, 10, 1, 300, 500);
 
         private AnEngine ProgrammDrawingEngine;
+
+        SoundPlayer soundPlayer;
 
         public Form1()
         {
@@ -37,7 +52,7 @@ namespace LiftingCrane
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (isInCrane)
+            if (_isInCrane)
             {
                 switch (comboBox1.SelectedIndex)
                 {
@@ -74,8 +89,9 @@ namespace LiftingCrane
 
         private void button1_Click(object sender, EventArgs e)
         {
-            isInCrane = true;
+            _isInCrane = true;
             button2.Visible = true;
+            button6.Visible = true;
             comboBox1.Visible = true;
             comboBox1.SelectedIndex = 0;
             button1.Visible = false;
@@ -98,7 +114,7 @@ namespace LiftingCrane
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            sizeFractal = (double)trackBar1.Value / 10;
+            _sizeFractal = (double)trackBar1.Value / 10;
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -108,21 +124,25 @@ namespace LiftingCrane
 
         private void button6_Click(object sender, EventArgs e)
         {
-            isTakedCargo = true;
+            //_isTakedCargo = true;
+            cargoStatus = CargoStatus.Taked;
             button6.Visible = false;
             button7.Visible = true;
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            isTakedCargo = false;
+            //_isTakedCargo = false;
+            //_isAbondonedCargo = true;
+            cargoStatus = CargoStatus.Abondoned;
             button6.Visible = true;
             button7.Visible = false;
+            cargo.StartFalling(-angle, _translateTralley, _cableHeight, _globalTime);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            isInCrane = false;
+            _isInCrane = false;
             _translateX = 0;
             _translateY = 0;
             _translateZ = -20;
@@ -130,6 +150,7 @@ namespace LiftingCrane
             _rotateY = 0;
             comboBox1.Visible = false;
             button2.Visible = false;
+            button6.Visible = false;
 
         }
 
@@ -141,9 +162,9 @@ namespace LiftingCrane
             label4.Text = _translateZ.ToString();
             label9.Text = _rotateX.ToString();
             label14.Text = angle.ToString();
-            
 
-            if (!isInCrane)
+
+            if (!_isInCrane)
             {
                 button1.Visible = false;
 
@@ -183,7 +204,7 @@ namespace LiftingCrane
                 if (e.KeyCode == Keys.A)
                 {
                     angle -= 1;
-                    angleCam += camSpeed;
+                    _angleCam += _camSpeed;
 
                     if (comboBox1.SelectedIndex != 2)
                         _rotateZ -= 1;
@@ -193,7 +214,7 @@ namespace LiftingCrane
                 if (e.KeyCode == Keys.D)
                 {
                     angle += 1;
-                    angleCam -= camSpeed;
+                    _angleCam -= _camSpeed;
 
                     if (comboBox1.SelectedIndex != 2)
                         _rotateZ += 1;
@@ -201,35 +222,35 @@ namespace LiftingCrane
 
                 if (e.KeyCode == Keys.W)
                 {
-                    if (translateTralley <= -200)
-                        translateTralley = -200;
+                    if (_translateTralley <= -200)
+                        _translateTralley = -200;
                     else
-                        translateTralley -= 2;
+                        _translateTralley -= 2;
                 }
 
                 if (e.KeyCode == Keys.S)
                 {
-                    if (translateTralley >= 22)
-                        translateTralley = 22;
+                    if (_translateTralley >= 0)
+                        _translateTralley = 0;
                     else
-                        translateTralley += 2;
+                        _translateTralley += 2;
                 }
 
                 if (e.KeyCode == Keys.ShiftKey)
                 {
-                    if (cableHeight >= 22)
-                        cableHeight = 22;
+                    if (_cableHeight >= 22)
+                        _cableHeight = 22;
                     else
-                        cableHeight += 0.5;
+                        _cableHeight += 0.5;
                 }
 
                 if (e.KeyCode == Keys.Space)
                 {
-                    if (cableHeight <= 1)
-                        cableHeight = 1;
+                    if (_cableHeight <= 1)
+                        _cableHeight = 1;
                     else
-                        cableHeight -= 0.5;
-                } 
+                        _cableHeight -= 0.5;
+                }
 
                 if (comboBox1.SelectedIndex == 0)
                 {
@@ -238,8 +259,8 @@ namespace LiftingCrane
 
                     double radius = 28;
 
-                    _translateX = centerX + radius * Math.Cos(angleCam);
-                    _translateY = centerY + radius * Math.Sin(angleCam);
+                    _translateX = centerX + radius * Math.Cos(_angleCam);
+                    _translateY = centerY + radius * Math.Sin(_angleCam);
                 }
 
                 if (comboBox1.SelectedIndex == 2)
@@ -287,12 +308,17 @@ namespace LiftingCrane
             Gl.glLoadIdentity();
 
             // установка перспективы
-            Glu.gluPerspective(45, (float)AnT.Width / (float)AnT.Height, 0.6, 1000);
+            Glu.gluPerspective(45, (float)AnT.Width / (float)AnT.Height, 0.6, 2000);
 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
             Gl.glLoadIdentity();
 
+            ModelDrawer.InitModelDrawer();
+            cargo = new CargoAnimation();
+            cargoStatus = CargoStatus.None;
+
             ProgrammDrawingEngine = new AnEngine(AnT.Width, AnT.Height, AnT.Width, AnT.Height);
+            
 
             RenderTimer.Start();
         }
@@ -301,13 +327,16 @@ namespace LiftingCrane
 
         private void Draw()
         {
+
             // очистка буфера цвета и буфера глубины
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
             Gl.glClearColor(255, 255, 255, 1);
             // очищение текущей матрицы
             Gl.glLoadIdentity();
-            ProgrammDrawingEngine.SwapImage();
+
+            //ProgrammDrawingEngine.SwapImage();
+
             // помещаем состояние матрицы в стек матриц, дальнейшие трансформации затронут только визуализацию объекта
             Gl.glPushMatrix();
 
@@ -324,18 +353,53 @@ namespace LiftingCrane
             Gl.glPushMatrix();
 
             ModelDrawer.DrawEarth();
-            ModelDrawer.DrawLiftingCrane(-angle, translateTralley, cableHeight, isTakedCargo);
+            ModelDrawer.DrawLiftingCrane(-angle, _translateTralley, _cableHeight, cargoStatus);
             ModelDrawer.DrawWalls();
             ModelDrawer.DrawWallsWithFractal();
-            ModelDrawer.DrawBineryTree(sizeFractal);
+            ModelDrawer.DrawBineryTree(_sizeFractal);
 
-            if (!isTakedCargo)
+            switch (cargoStatus)
             {
-                ModelDrawer.DrawCargo();
+                case CargoStatus.None:
+                    {
+                        ModelDrawer.DrawCargo();
+                        break;
+                    }
+                case CargoStatus.Abondoned:
+                    {
+                        cargo.DrawFallingCargo(_globalTime, out cargoStatus);
+                        break;
+                    }
+                case CargoStatus.Falled:
+                    {
+                        Gl.glPushMatrix();
+                        Gl.glTranslated(15, 90, cargo.GetTranslateCargoZ);
+                        Gl.glRotated(cargo.GetAngle, 0, 0, 1);
+                        Gl.glTranslated(-15, -90, -cargo.GetTranslateCargoZ);
+                        Gl.glTranslated(cargo.GetTranslateCargoX, cargo.GetTranslateCargoY, cargo.GetTranslateCargoZ);
+                        ModelDrawer.DrawCargo();
+                        Gl.glPopMatrix();
+                        break;
+                    }
+                case CargoStatus.Broken:
+                    {
+                        if (!_isBoom)
+                        {
+                            Random rnd = new Random();
+
+                            BOOOOM_1.SetNewPosition((float)cargo.GetTranslateCargoX, (float)cargo.GetTranslateCargoY, 10);
+                            BOOOOM_1.SetNewPower(rnd.Next(20, 80));
+                            BOOOOM_1.Boooom(_globalTime);
+                            _isBoom = true;
+                            soundPlayer = new SoundPlayer(@"D:\C#Projects\LiftingCrane\bin\Debug\falled.wav");
+                            soundPlayer.Play();
+                        }
+
+                        break;
+                    }
             }
-            
 
-
+            BOOOOM_1.Calculate(_globalTime);
 
             Gl.glPopMatrix();
             Gl.glFlush();
@@ -345,6 +409,8 @@ namespace LiftingCrane
 
         private void RenderTimer_Tick(object sender, EventArgs e)
         {
+            _globalTime += (float)RenderTimer.Interval / 1000;
+            label15.Text = _globalTime.ToString();
             Draw();
         }
     }
