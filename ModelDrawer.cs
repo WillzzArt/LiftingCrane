@@ -12,6 +12,8 @@ namespace LiftingCrane
 
         static uint walls1 = 0;
         static uint walls2 = 0;
+        static uint bricks = 0;
+        static uint[] cargos = new uint[3];
 
         static ModelDrawer()
         {
@@ -29,6 +31,25 @@ namespace LiftingCrane
 
             walls1 = TextureMaker.LoadTexture("fon1.jpg");
             walls2 = TextureMaker.LoadTexture("fon2.jpg");
+            cargos[0] = TextureMaker.LoadTexture("bricks.jpg");
+            cargos[1] = TextureMaker.LoadTexture("concrete.jpg");
+            cargos[2] = TextureMaker.LoadTexture("bricks.jpg");
+        }
+
+        private static void DrawTexture()
+        {
+            Gl.glBegin(Gl.GL_QUADS);
+
+            Gl.glVertex3d(-1, 1, 0);
+            Gl.glTexCoord2f(0, 0);
+            Gl.glVertex3d(-1, -1, 0);
+            Gl.glTexCoord2f(1, 0);
+            Gl.glVertex3d(1, -1, 0);
+            Gl.glTexCoord2f(1, 1);
+            Gl.glVertex3d(1, 1, 0);
+            Gl.glTexCoord2f(0, 1);
+
+            Gl.glEnd();
         }
 
         public static void DrawEarth()
@@ -82,18 +103,7 @@ namespace LiftingCrane
                 Gl.glTranslated(0, -460, 200);
                 Gl.glRotated(90, 1, 0, 0);
                 Gl.glScaled(460, 220, 0);
-                Gl.glBegin(Gl.GL_QUADS);
-
-                Gl.glVertex3d(-1, 1, 0);
-                Gl.glTexCoord2f(0, 0);
-                Gl.glVertex3d(-1, -1, 0);
-                Gl.glTexCoord2f(1, 0);
-                Gl.glVertex3d(1, -1, 0);
-                Gl.glTexCoord2f(1, 1);
-                Gl.glVertex3d(1, 1, 0);
-                Gl.glTexCoord2f(0, 1);
-
-                Gl.glEnd();
+                DrawTexture();
                 Gl.glPopMatrix();
                 Gl.glPopMatrix();
 
@@ -105,10 +115,10 @@ namespace LiftingCrane
         }
 
         //Отрисовка крана
-        public static void DrawLiftingCrane(double angle, double translateTralley)
+        public static void DrawLiftingCrane(double angle, double translateTralley, double cableHeight, bool isTakedCargo)
         {
             double centerX = 15, centerY = 90, centerZ = -255;
-
+            Gl.glPushMatrix();
             DrawCraneFundament();
             DrawCabineFundament();
             DrawFootingCrane(5, 5);
@@ -121,7 +131,7 @@ namespace LiftingCrane
 
             Gl.glPushMatrix();
             Gl.glTranslated(0, translateTralley, 0);
-            DrawMobileTralleyCrane();
+            DrawMobileTralleyCrane(cableHeight);
             Gl.glPopMatrix();
 
 
@@ -130,12 +140,22 @@ namespace LiftingCrane
             DrawCraneTown();
             DrawCraneCounterweight();
             DrawCabine();
+
+            if (isTakedCargo)
+            {
+                Gl.glPushMatrix();
+                Gl.glTranslated(15, translateTralley + 20, 218 - cableHeight*10);
+                DrawCargo();
+                Gl.glPopMatrix();
+            }
+
+            Gl.glPopMatrix();
             Gl.glPopMatrix();
             Gl.glPopMatrix();
         }
 
         //Отрисовка тележки для крюка крана
-        private static void DrawMobileTralleyCrane()
+        private static void DrawMobileTralleyCrane(double cableHeight)
         {
             Gl.glPushMatrix();
             Gl.glColor3f(0, 0, 0);
@@ -156,6 +176,14 @@ namespace LiftingCrane
             Gl.glTranslated(26.5, 20, 229);
             Gl.glScaled(0.15, 4, 0.3);
             Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+
+            //трос
+            Gl.glPushMatrix();
+            Gl.glTranslated(15, 20, 228);
+            Gl.glRotated(180, 0, 1, 0);
+            Gl.glScaled(0.1, 0.1, cableHeight);
+            Glut.glutSolidCylinder(10, 10, 32, 32);
             Gl.glPopMatrix();
 
             Gl.glPopMatrix();
@@ -889,7 +917,114 @@ namespace LiftingCrane
             Gl.glTranslated(100, 30, 12);
             Gl.glRotated(-45, 0, 0, 1);
             Gl.glScaled(7, 0.4, 5.2);
+            
             Glut.glutSolidCube(10);
+            Gl.glPopMatrix();
+        }
+
+        //Отрисовка груза
+        public static void DrawCargo()
+        {
+            Gl.glPushMatrix();
+            Gl.glEnable(Gl.GL_TEXTURE_2D);
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, cargos[1]);
+            var angle = 0;
+            for (int i = 0; i < 5; i++)
+            {
+                Gl.glPushMatrix();
+                Gl.glRotated(angle, 0, 0, 1);
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(0, 10, 0);
+                Gl.glRotated(90, 1, 0, 0);
+                Gl.glScaled(10, 10, 0);
+                DrawTexture();
+                Gl.glPopMatrix();
+                Gl.glPopMatrix();
+
+                angle += 90;
+            }
+
+            for (int i = -10; i < 11; i += 20)
+            {
+                Gl.glPushMatrix();
+                Gl.glTranslated(0, 0, i);
+                Gl.glScaled(10, 10, 0);
+                DrawTexture();
+                Gl.glPopMatrix();
+
+                angle += 90;
+            }
+
+            Gl.glDisable(Gl.GL_TEXTURE_2D);
+
+            Gl.glPushMatrix();
+            Gl.glTranslated(0, -12, -13);
+            DrawPallet();
+            Gl.glPopMatrix();
+
+            Gl.glPopMatrix();
+        }
+
+        //Отрисовка поддона
+        private static void DrawPallet()
+        {
+            Gl.glPushMatrix();
+            Gl.glColor3f(0.78f, 0.51f, 0.17f);
+
+            for (int i = 0; i < 25 ; i += 12)
+            {
+                Gl.glPushMatrix();
+                Gl.glTranslated(0, i, 0);
+                Gl.glScaled(4, 0.5, 0.3);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+
+            }
+
+            for (double i = -17.5; i < 18.5; i += 17.5)
+            {
+                Gl.glPushMatrix();
+                Gl.glTranslated(i, 12, 2);
+                Gl.glScaled(0.5, 2.9, 0.1);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+            }
+
+            for (double i = -0.1; i < 24; i+= 5.925)
+            {
+                Gl.glPushMatrix();
+                Gl.glColor3f(0.81f, 0.54f, 0.2f);
+                Gl.glTranslated(0, i, 3);
+                Gl.glScaled(4, 0.4, 0.1);
+                Glut.glutSolidCube(10);
+                Gl.glPopMatrix();
+            }
+            
+            //крепление
+            Gl.glPushMatrix();
+            Gl.glColor3f(0.81f, 0.81f, 0.81f);
+            Gl.glTranslated(0, -0.1, 3);
+            Gl.glScaled(0.1, 0.1, 2.2);
+            Glut.glutSolidCylinder(10, 10, 32, 32);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glColor3f(0.81f, 0.81f, 0.81f);
+            Gl.glTranslated(0, 23.8, 3);
+            Gl.glScaled(0.1, 0.1, 2.2);
+            Glut.glutSolidCylinder(10, 10, 32, 32);
+            Gl.glPopMatrix();
+
+            Gl.glPushMatrix();
+            Gl.glColor3f(0.81f, 0.81f, 0.81f);
+            Gl.glTranslated(0, 23, 24);
+            Gl.glRotated(90, 1, 0, 0);
+            Gl.glScaled(0.1, 0.1, 2.4);
+            Glut.glutSolidCylinder(10, 10, 32, 32);
+            Gl.glPopMatrix();
+
+
             Gl.glPopMatrix();
         }
 
@@ -906,6 +1041,8 @@ namespace LiftingCrane
             CalculateBineryTree(0, 0, 20, 0, size);
             Gl.glEnd();
             Gl.glPopMatrix();
+
+            
         }
 
         private static void CalculateBineryTree(double x, double y, int length, int angle, double size)

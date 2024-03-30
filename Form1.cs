@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LiftingCrane.Filter;
+using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Tao.DevIl;
 using Tao.FreeGlut;
@@ -21,8 +23,10 @@ namespace LiftingCrane
         double angleCam = 0.0;
         double camSpeed = 0.0175;
         double sizeFractal = 1.2;
+        double cableHeight = 1;
+        bool isTakedCargo = false;
 
-        
+        private AnEngine ProgrammDrawingEngine;
 
         public Form1()
         {
@@ -95,6 +99,25 @@ namespace LiftingCrane
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             sizeFractal = (double)trackBar1.Value / 10;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            ProgrammDrawingEngine.Filter_4();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            isTakedCargo = true;
+            button6.Visible = false;
+            button7.Visible = true;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            isTakedCargo = false;
+            button6.Visible = true;
+            button7.Visible = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -192,6 +215,22 @@ namespace LiftingCrane
                         translateTralley += 2;
                 }
 
+                if (e.KeyCode == Keys.ShiftKey)
+                {
+                    if (cableHeight >= 22)
+                        cableHeight = 22;
+                    else
+                        cableHeight += 0.5;
+                }
+
+                if (e.KeyCode == Keys.Space)
+                {
+                    if (cableHeight <= 1)
+                        cableHeight = 1;
+                    else
+                        cableHeight -= 0.5;
+                } 
+
                 if (comboBox1.SelectedIndex == 0)
                 {
                     double centerX = -15;
@@ -253,6 +292,7 @@ namespace LiftingCrane
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
             Gl.glLoadIdentity();
 
+            ProgrammDrawingEngine = new AnEngine(AnT.Width, AnT.Height, AnT.Width, AnT.Height);
 
             RenderTimer.Start();
         }
@@ -267,7 +307,7 @@ namespace LiftingCrane
             Gl.glClearColor(255, 255, 255, 1);
             // очищение текущей матрицы
             Gl.glLoadIdentity();
-
+            ProgrammDrawingEngine.SwapImage();
             // помещаем состояние матрицы в стек матриц, дальнейшие трансформации затронут только визуализацию объекта
             Gl.glPushMatrix();
 
@@ -284,11 +324,18 @@ namespace LiftingCrane
             Gl.glPushMatrix();
 
             ModelDrawer.DrawEarth();
-            ModelDrawer.DrawLiftingCrane(-angle, translateTralley);
+            ModelDrawer.DrawLiftingCrane(-angle, translateTralley, cableHeight, isTakedCargo);
             ModelDrawer.DrawWalls();
             ModelDrawer.DrawWallsWithFractal();
             ModelDrawer.DrawBineryTree(sizeFractal);
+
+            if (!isTakedCargo)
+            {
+                ModelDrawer.DrawCargo();
+            }
             
+
+
 
             Gl.glPopMatrix();
             Gl.glFlush();
