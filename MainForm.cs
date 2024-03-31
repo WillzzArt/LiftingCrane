@@ -10,7 +10,7 @@ using Tao.OpenGl;
 namespace LiftingCrane
 {
 
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         // вспомогательные переменные - в них будут хранится обработанные значения,
         // полученные при перетаскивании ползунков пользователем
@@ -43,7 +43,7 @@ namespace LiftingCrane
 
         SoundPlayer soundPlayer;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             AnT.InitializeContexts();
@@ -151,7 +151,20 @@ namespace LiftingCrane
             comboBox1.Visible = false;
             button2.Visible = false;
             button6.Visible = false;
+            button7.Visible = false;
 
+        }
+
+        private void обАвтореToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form about = new AboutForm();
+            about.ShowDialog();
+        }
+
+        private void управлениеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form about = new AboutControlForm();
+            about.ShowDialog();
         }
 
         private void AnT_KeyDown(object sender, KeyEventArgs e)
@@ -335,13 +348,10 @@ namespace LiftingCrane
             // очищение текущей матрицы
             Gl.glLoadIdentity();
 
-            //ProgrammDrawingEngine.SwapImage();
-
             // помещаем состояние матрицы в стек матриц, дальнейшие трансформации затронут только визуализацию объекта
             Gl.glPushMatrix();
 
-            //Gl.glTranslated(_transleteX, _transleteY, _transleteZ);
-            // поворот по установленной оси
+            // поворот по оси
             Gl.glRotated(_rotateX, 1, 0, 0);
             Gl.glRotated(_rotateY, 0, 1, 0);
             Gl.glRotated(_rotateZ, 0, 0, 1);
@@ -350,6 +360,8 @@ namespace LiftingCrane
             // и масштабирование объекта
             Gl.glScaled(zoom, zoom, zoom);
 
+            //ProgrammDrawingEngine.SwapImage();
+
             Gl.glPushMatrix();
 
             ModelDrawer.DrawEarth();
@@ -357,6 +369,8 @@ namespace LiftingCrane
             ModelDrawer.DrawWalls();
             ModelDrawer.DrawWallsWithFractal();
             ModelDrawer.DrawBineryTree(_sizeFractal);
+            ModelDrawer.DrawSand();
+            ModelDrawer.DrawBuilding();
 
             switch (cargoStatus)
             {
@@ -387,11 +401,16 @@ namespace LiftingCrane
                         {
                             Random rnd = new Random();
 
-                            BOOOOM_1.SetNewPosition((float)cargo.GetTranslateCargoX, (float)cargo.GetTranslateCargoY, 10);
+                            var x = -15 + (cargo.GetTranslateCargoY) * Math.Cos(cargo.GetAngle * 2 * Math.PI / 360.0);
+                            var y = -90 + (cargo.GetTranslateCargoY) * Math.Sin(cargo.GetAngle * 2 * Math.PI / 360.0);
+
+                            BOOOOM_1.SetNewPosition((float)x, (float)y, 10);
+
                             BOOOOM_1.SetNewPower(rnd.Next(20, 80));
                             BOOOOM_1.Boooom(_globalTime);
+                            Gl.glPopMatrix();
                             _isBoom = true;
-                            soundPlayer = new SoundPlayer(@"D:\C#Projects\LiftingCrane\bin\Debug\falled.wav");
+                            soundPlayer = new SoundPlayer(@"falled.wav");
                             soundPlayer.Play();
                         }
 
@@ -406,6 +425,8 @@ namespace LiftingCrane
             AnT.Invalidate();
 
         }
+
+        double[] modelviewMatrix = new double[16];
 
         private void RenderTimer_Tick(object sender, EventArgs e)
         {

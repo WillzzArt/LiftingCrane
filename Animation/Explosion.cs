@@ -166,7 +166,7 @@ namespace LiftingCrane.Animation
 
                         // отражение от "земли"
                         // если координата Y стала меньше нуля (удар о землю)
-                        if (PartilceArray[ax].GetPositionY() < 0)
+                        if (PartilceArray[ax].GetPositionZ() < -14)
                         {
                             // инвертируем проекцию скорости на ось Y, как будто частица ударилась и отскочила от земли
                             // причем скорость затухает на 40%

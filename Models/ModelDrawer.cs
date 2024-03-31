@@ -13,7 +13,7 @@ namespace LiftingCrane
 
         static uint walls1 = 0;
         static uint walls2 = 0;
-        static uint bricks = 0;
+        static uint buildBg = 0;
         static uint[] cargos = new uint[3];
 
         /*static ModelDrawer()
@@ -55,6 +55,7 @@ namespace LiftingCrane
             //Инициализация текстур
             walls1 = TextureMaker.LoadTexture("fon1.jpg");
             walls2 = TextureMaker.LoadTexture("fon2.jpg");
+            buildBg = TextureMaker.LoadTexture("buildingBg.jpg");
             cargos[0] = TextureMaker.LoadTexture("bricks.jpg");
             cargos[1] = TextureMaker.LoadTexture("concrete.jpg");
             cargos[2] = TextureMaker.LoadTexture("bricks.jpg");
@@ -113,7 +114,7 @@ namespace LiftingCrane
             Gl.glEnable(Gl.GL_TEXTURE_2D);
 
             var angle = 0;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
                 if (i > 1)
                     Gl.glBindTexture(Gl.GL_TEXTURE_2D, walls1);
@@ -1049,6 +1050,60 @@ namespace LiftingCrane
 
 
             Gl.glPopMatrix();
+        }
+
+        public static void DrawSand()
+        {
+            
+            for (int i = 0; i < 3; i ++)
+            {
+                Gl.glPushMatrix();
+                Gl.glColor3f(0.91f, 0.76f, 0.007f);
+                Gl.glRotated(-61 + (i + 15) * 41, 0, 0, 1);
+                Gl.glTranslated(-150, 0, -15);
+                Gl.glScaled(2 + i, 6 - i, 3);
+                Glut.glutSolidSphere(10, 32, 32);
+                Gl.glPopMatrix();
+            }
+            
+        }
+
+        public static void DrawBuilding()
+        {
+            Gl.glEnable(Gl.GL_TEXTURE_2D);
+
+            var angle = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                Gl.glBindTexture(Gl.GL_TEXTURE_2D, buildBg);
+
+                Gl.glPushMatrix();
+                Gl.glTranslated(-150, -300, 60);
+                Gl.glRotated(angle, 0, 0, 1);
+                Gl.glTranslated(150, 300, -60);
+                Gl.glPushMatrix();
+                Gl.glTranslated(-150, -240, 60);
+                Gl.glRotated(90, 1, 0, 0);
+                Gl.glScaled(60, 80, 0);
+                DrawTexture();
+                Gl.glPopMatrix();
+                Gl.glPopMatrix();
+
+                angle += 90;
+            }
+
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, cargos[1]);
+
+            Gl.glPushMatrix();
+            Gl.glPushMatrix();
+            Gl.glTranslated(-150, -300, 140);
+            Gl.glScaled(60, 60, 0);
+            DrawTexture();
+            Gl.glPopMatrix();
+            Gl.glPopMatrix();
+
+
+            Gl.glDisable(Gl.GL_TEXTURE_2D);
         }
 
         public static void DrawBineryTree(double size)

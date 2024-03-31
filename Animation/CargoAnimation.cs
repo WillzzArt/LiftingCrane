@@ -104,7 +104,6 @@ namespace LiftingCrane.Animation
             lastTime = timeNow;
             cargoStatus = CargoStatus.Abondoned;
 
-            // перерасчитываем ускорение, движущее частицу, с учетом затухания
             for (int a = 0; a < 3; a++)
             {
                 if (power[a] < 2000)
@@ -130,8 +129,6 @@ namespace LiftingCrane.Animation
                     
                 }
 
-
-                // обновляем скорость частицы
                 speed[a] += (Grav[a] + power[a]) * dTime;
             }
         }

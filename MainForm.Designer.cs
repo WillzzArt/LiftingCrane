@@ -1,6 +1,6 @@
 ﻿namespace LiftingCrane
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -91,6 +91,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
+            this.button1.TabStop = false;
             this.button1.Text = "Сесть";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Visible = false;
@@ -217,6 +218,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(153, 21);
             this.comboBox1.TabIndex = 15;
+            this.comboBox1.TabStop = false;
             this.comboBox1.Visible = false;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
@@ -226,6 +228,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 17;
+            this.button2.TabStop = false;
             this.button2.Text = "Слезть";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Visible = false;
@@ -271,14 +274,16 @@
             // обАвтореToolStripMenuItem
             // 
             this.обАвтореToolStripMenuItem.Name = "обАвтореToolStripMenuItem";
-            this.обАвтореToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.обАвтореToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.обАвтореToolStripMenuItem.Text = "Об авторе";
+            this.обАвтореToolStripMenuItem.Click += new System.EventHandler(this.обАвтореToolStripMenuItem_Click);
             // 
             // управлениеToolStripMenuItem
             // 
             this.управлениеToolStripMenuItem.Name = "управлениеToolStripMenuItem";
-            this.управлениеToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.управлениеToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.управлениеToolStripMenuItem.Text = "Управление";
+            this.управлениеToolStripMenuItem.Click += new System.EventHandler(this.управлениеToolStripMenuItem_Click);
             // 
             // button3
             // 
@@ -286,6 +291,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(122, 23);
             this.button3.TabIndex = 21;
+            this.button3.TabStop = false;
             this.button3.Text = "Изменить фрактал";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -298,6 +304,7 @@
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(122, 45);
             this.trackBar1.TabIndex = 22;
+            this.trackBar1.TabStop = false;
             this.trackBar1.Value = 20;
             this.trackBar1.Visible = false;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
@@ -308,6 +315,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 23;
+            this.button4.TabStop = false;
             this.button4.Text = "Отмена";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Visible = false;
@@ -319,7 +327,8 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 24;
-            this.button5.Text = "Boooom";
+            this.button5.TabStop = false;
+            this.button5.Text = "Filter";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -329,6 +338,7 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 52);
             this.button6.TabIndex = 25;
+            this.button6.TabStop = false;
             this.button6.Text = "Подцепить груз";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Visible = false;
@@ -340,6 +350,7 @@
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 52);
             this.button7.TabIndex = 26;
+            this.button7.TabStop = false;
             this.button7.Text = "Отцепить груз";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Visible = false;
@@ -354,7 +365,7 @@
             this.label15.TabIndex = 27;
             this.label15.Text = "label15";
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -386,7 +397,7 @@
             this.Controls.Add(this.AnT);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Lifting Crane";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
