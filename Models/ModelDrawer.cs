@@ -17,27 +17,6 @@ namespace LiftingCrane
         static uint sand = 0;
         static uint[] cargos = new uint[3];
 
-        /*static ModelDrawer()
-        {
-            //Инициализация массива
-            for (int i = 0; i < gressCoord.GetLength(0); i++)
-            {
-                for (int j = 0; j < gressCoord.GetLength(1); j += 3)
-                { 
-                    var coord = rnd.Next(-452, 452);
-                    gressCoord[i, j] = coord;
-                    gressCoord[i, j + 1] = coord - rnd.Next(-7, -1);
-                    gressCoord[i, j + 2] = coord - rnd.Next(1, 7);
-                }
-            }
-
-            walls1 = TextureMaker.LoadTexture("fon1.jpg");
-            walls2 = TextureMaker.LoadTexture("fon2.jpg");
-            cargos[0] = TextureMaker.LoadTexture("bricks.jpg");
-            cargos[1] = TextureMaker.LoadTexture("concrete.jpg");
-            cargos[2] = TextureMaker.LoadTexture("bricks.jpg");
-        }*/
-
         //Инициализация переменных класса
         public static void InitModelDrawer()
         {
@@ -60,7 +39,7 @@ namespace LiftingCrane
             sand = TextureMaker.LoadTexture("sand.jpg");
             cargos[0] = TextureMaker.LoadTexture("bricks.jpg");
             cargos[1] = TextureMaker.LoadTexture("concrete.jpg");
-            cargos[2] = TextureMaker.LoadTexture("bricks.jpg");
+            cargos[2] = TextureMaker.LoadTexture("woods.jpg");
         }
         private static void DrawTexture()
         {
@@ -953,7 +932,7 @@ namespace LiftingCrane
         {
             Gl.glPushMatrix();
             Gl.glEnable(Gl.GL_TEXTURE_2D);
-            Gl.glBindTexture(Gl.GL_TEXTURE_2D, cargos[1]);
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, cargos[0]);
             var angle = 0;
             for (int i = 0; i < 5; i++)
             {

@@ -1,5 +1,6 @@
 ﻿using LiftingCrane.Animation;
 using LiftingCrane.Filter;
+using LiftingCrane.SurfaceOfRotation;
 using System;
 using System.Media;
 using System.Windows.Forms;
@@ -16,14 +17,18 @@ namespace LiftingCrane
         // полученные при перетаскивании ползунков пользователем
         double _translateX = 0, _translateY = 0, _translateZ = -20, zoom = 1;
         float _globalTime = 0;
+
+        int a, b, c, d;
+
         // оси вращения
         double _rotateX = -80, _rotateY = 0, _rotateZ = 0;
-
+        double _rotSurface = 0;
+        double _rotSurfaceY = 0;
         double angle = 0;
         double _translateTralley = 0;
         double _angleCam = 0.0;
         double _camSpeed = 0.0175;
-        double _sizeFractal = 1.2;
+        double _sizeFractal = 1.6;
         double _cableHeight = 1;
 
         bool _isBoom = false;
@@ -45,6 +50,7 @@ namespace LiftingCrane
         private AnEngine ProgrammDrawingEngine;
 
         SoundPlayer soundPlayer;
+        SurfaceRotation surface;
 
         public MainForm()
         {
@@ -98,6 +104,8 @@ namespace LiftingCrane
             comboBox1.Visible = true;
             comboBox1.SelectedIndex = 0;
             button1.Visible = false;
+            button3.Visible = false;
+            button9.Visible = false;
 
         }
 
@@ -106,6 +114,13 @@ namespace LiftingCrane
             button3.Visible = false;
             trackBar1.Visible = true;
             button4.Visible = true;
+            _translateX = -46;
+            _translateY = 20;
+            _translateZ = -20;
+            _rotateX = -86;
+            _rotateZ = 48;
+
+
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -126,7 +141,8 @@ namespace LiftingCrane
         }
 
         private void button6_Click(object sender, EventArgs e)
-        {;
+        {
+            ;
             cargoStatus = CargoStatus.Taked;
             button6.Visible = false;
             button7.Visible = true;
@@ -153,6 +169,8 @@ namespace LiftingCrane
             button2.Visible = false;
             button6.Visible = false;
             button7.Visible = false;
+            button3.Visible = true;
+            button9.Visible = true;
 
         }
 
@@ -168,6 +186,59 @@ namespace LiftingCrane
             about.ShowDialog();
         }
 
+        private void button9_Click(object sender, EventArgs e)
+        {
+            _translateX = 0;
+            _translateY = -10;
+            _translateZ = -20;
+            _rotateX = -86;
+            _rotateZ = -54;
+            button9.Visible = false;
+            comboBox2.Visible = true;
+            comboBox2.SelectedIndex = 2;
+            button10.Visible = true;
+            trackBar2.Visible = true;
+            trackBar3.Visible = true;
+            trackBar4.Visible = true;
+            trackBar5.Visible = true;
+
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            button9.Visible = true;
+            comboBox2.Visible = false;
+            button10.Visible = false;
+            trackBar2.Visible = false;
+            trackBar3.Visible = false;
+            trackBar4.Visible = false;
+            trackBar5.Visible = false;
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            a = trackBar2.Value;
+            surface = new SurfaceRotation(a, b, c, d);
+        }
+
+        private void trackBar3_Scroll(object sender, EventArgs e)
+        {
+            b = trackBar2.Value;
+            surface = new SurfaceRotation(a, b, c, d);
+        }
+
+        private void trackBar4_Scroll(object sender, EventArgs e)
+        {
+            c = trackBar2.Value;
+            surface = new SurfaceRotation(a, b, c, d);
+        }
+
+        private void trackBar5_Scroll(object sender, EventArgs e)
+        {
+            d = trackBar2.Value;
+            surface = new SurfaceRotation(a, b, c, d);
+        }
+
         private void button8_Click(object sender, EventArgs e)
         {
             cargoStatus = CargoStatus.None;
@@ -177,7 +248,7 @@ namespace LiftingCrane
             _isBoom = false;
         }
 
-        
+
 
         private void AnT_KeyDown(object sender, KeyEventArgs e)
         {
@@ -196,7 +267,12 @@ namespace LiftingCrane
                 button1.Visible = false;
 
                 if (e.KeyCode == Keys.W)
-                    _translateY -= 2;
+                {
+                    if (_translateY <= -460)
+                        _translateY = -460;
+                    else
+                        _translateY -= 2;
+                }
 
                 if (e.KeyCode == Keys.S)
                     _translateY += 2;
@@ -251,7 +327,7 @@ namespace LiftingCrane
                     }
 
                     if (angle < 0) angle = 360;
-                    
+
                 }
 
 
@@ -370,17 +446,17 @@ namespace LiftingCrane
             Gl.glLoadIdentity();
 
             // установка перспективы
-            Glu.gluPerspective(45, (float)AnT.Width / (float)AnT.Height, 0.6, 2000);
+            Glu.gluPerspective(45, (float)AnT.Width / (float)AnT.Height, 0.8, 2000);
 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
             Gl.glLoadIdentity();
 
             ModelDrawer.InitModelDrawer();
-            
+
             cargoStatus = CargoStatus.None;
 
             ProgrammDrawingEngine = new AnEngine(AnT.Width, AnT.Height, AnT.Width, AnT.Height);
-            
+            surface = new SurfaceRotation(1, 2, 3, 4);
 
             RenderTimer.Start();
         }
@@ -389,7 +465,7 @@ namespace LiftingCrane
 
         private void Draw()
         {
-
+            _rotSurface++;
             // очистка буфера цвета и буфера глубины
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
@@ -420,6 +496,34 @@ namespace LiftingCrane
             ModelDrawer.DrawBineryTree(_sizeFractal);
             ModelDrawer.DrawSand();
             ModelDrawer.DrawBuilding();
+
+            Gl.glPushMatrix();
+            Gl.glColor3f(0.21f, 0.02f, 0.04f);
+            Gl.glTranslated(-70, 70, 8);
+            Gl.glRotated(_rotSurface, 1, 0, 0);
+            Gl.glRotated(_rotSurface, 0, 1, 0);
+            Gl.glRotated(_rotSurface, 0, 0, 1);
+            switch (comboBox2.SelectedIndex)
+            {
+                case 0:
+                    {
+                        surface.DrawSurfaceWithPoint();
+                        break;
+                    }
+
+                case 1:
+                    {
+                        surface.DrawSurfaceWithLine();
+                        break;
+                    }
+                case 2:
+                    {
+                        surface.DrawWithQuads();
+                        break;
+                    }
+            }
+
+            Gl.glPopMatrix();
 
             switch (cargoStatus)
             {
@@ -463,7 +567,7 @@ namespace LiftingCrane
                             button8.Visible = true;
                             label16.Visible = true;
                             soundPlayer = new SoundPlayer(@"falled.wav");
-                            //soundPlayer.Play();
+                            soundPlayer.Play();
                         }
 
                         break;
