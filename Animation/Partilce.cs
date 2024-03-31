@@ -3,7 +3,7 @@
     internal class Partilce
     {
         // позиция частицы
-        private float[] position = new float[3];
+        private double[] position = new double[3];
         // размер
         private float _size;
 
@@ -11,23 +11,23 @@
         private double _angle;
 
         // время жизни
-        private float _lifeTime;
+        private double _lifeTime;
 
         // вектор гравитации
         private float[] Grav = new float[3];
         // ускорение частицы
-        private float[] power = new float[3];
+        private double[] power = new double[3];
         // коэфицент затухания силы
-        private float attenuation;
+        private double attenuation;
 
         // набранная скорость
-        private float[] speed = new float[3];
+        private double[] speed = new double[3];
 
         // временной интервал активации частицы
         private float LastTime = 0;
 
         // конструктор класса
-        public Partilce(float x, float y, float z, float size, float lifeTime, float start_time)
+        public Partilce(double x, double y, double z, float size, float lifeTime, float start_time)
         {
             // записываем все начальные настройки частицы, устанавливаем начальный коэфицент затухания
             // и обнуляем скорость и силу, приложенную к частице
@@ -83,7 +83,7 @@
         }
 
         // установка нового значения затухания
-        public void setAttenuation(float new_value)
+        public void setAttenuation(double new_value)
         {
             attenuation = new_value;
         }
@@ -93,7 +93,7 @@
         {
             // орпределяем разницу во времени, прошедшую с последнего обновления
             // позиции частицы (ведь таймер может быть не фиксированный)
-            float dTime = timeNow - LastTime;
+            double dTime = timeNow - LastTime;
             _lifeTime -= dTime;
 
             // обновляем последнюю отметку временного интервала
@@ -132,15 +132,15 @@
         }
 
         // получение координат частицы
-        public float GetPositionX()
+        public double GetPositionX()
         {
             return position[0];
         }
-        public float GetPositionY()
+        public double GetPositionY()
         {
             return position[1];
         }
-        public float GetPositionZ()
+        public double GetPositionZ()
         {
             return position[2];
         }

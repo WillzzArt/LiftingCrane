@@ -6,9 +6,9 @@ namespace LiftingCrane.Animation
     internal class Explosion
     {
         // позиция взрыва
-        private float[] position = new float[3];
+        private double[] position = new double[3];
         // мощность
-        private float _power;
+        private double _power;
         // максимальное количество частиц
         private int MAX_PARTICLES = 1000;
         // текущее установленное количество частиц
@@ -26,7 +26,7 @@ namespace LiftingCrane.Animation
         private int DisplayListNom = 0;
 
         // конструктор класса; в него передаются координаты, где должен произойти взрыв, мощность и количество чатиц
-        public Explosion(float x, float y, float z, float power, int particle_count)
+        public Explosion(double x, double y, double z, double power, int particle_count)
         {
             position[0] = x;
             position[1] = y;
@@ -46,7 +46,7 @@ namespace LiftingCrane.Animation
         }
 
         // функция обновления позиции взрыва
-        public void SetNewPosition(float x, float y, float z)
+        public void SetNewPosition(double x, double y, double z)
         {
             position[0] = x;
             position[1] = y;

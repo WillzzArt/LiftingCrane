@@ -14,6 +14,7 @@ namespace LiftingCrane
         static uint walls1 = 0;
         static uint walls2 = 0;
         static uint buildBg = 0;
+        static uint sand = 0;
         static uint[] cargos = new uint[3];
 
         /*static ModelDrawer()
@@ -56,6 +57,7 @@ namespace LiftingCrane
             walls1 = TextureMaker.LoadTexture("fon1.jpg");
             walls2 = TextureMaker.LoadTexture("fon2.jpg");
             buildBg = TextureMaker.LoadTexture("buildingBg.jpg");
+            sand = TextureMaker.LoadTexture("sand.jpg");
             cargos[0] = TextureMaker.LoadTexture("bricks.jpg");
             cargos[1] = TextureMaker.LoadTexture("concrete.jpg");
             cargos[2] = TextureMaker.LoadTexture("bricks.jpg");
@@ -1054,8 +1056,21 @@ namespace LiftingCrane
 
         public static void DrawSand()
         {
+            for (int i = 0; i < 3; i++)
+            {
+                Gl.glEnable(Gl.GL_TEXTURE_2D);
+                Gl.glBindTexture(Gl.GL_TEXTURE_2D, sand);
+                Gl.glPushMatrix();
+                Gl.glPushMatrix();
+                Gl.glTranslated(-100 - i * 50, 100 - i * 50, -14);
+                Gl.glScaled(50, 50, 0);
+                DrawTexture();
+                Gl.glPopMatrix();
+                Gl.glPopMatrix();
+                Gl.glDisable(Gl.GL_TEXTURE_2D);
+            }
             
-            for (int i = 0; i < 3; i ++)
+            /*for (int i = 0; i < 3; i ++)
             {
                 Gl.glPushMatrix();
                 Gl.glColor3f(0.91f, 0.76f, 0.007f);
@@ -1064,8 +1079,8 @@ namespace LiftingCrane
                 Gl.glScaled(2 + i, 6 - i, 3);
                 Glut.glutSolidSphere(10, 32, 32);
                 Gl.glPopMatrix();
-            }
-            
+            }*/
+
         }
 
         public static void DrawBuilding()
@@ -1078,11 +1093,11 @@ namespace LiftingCrane
                 Gl.glBindTexture(Gl.GL_TEXTURE_2D, buildBg);
 
                 Gl.glPushMatrix();
-                Gl.glTranslated(-150, -300, 60);
+                Gl.glTranslated(160, -170, 60);
                 Gl.glRotated(angle, 0, 0, 1);
-                Gl.glTranslated(150, 300, -60);
+                Gl.glTranslated(-160, 170, -60);
                 Gl.glPushMatrix();
-                Gl.glTranslated(-150, -240, 60);
+                Gl.glTranslated(160, -110, 60);
                 Gl.glRotated(90, 1, 0, 0);
                 Gl.glScaled(60, 80, 0);
                 DrawTexture();
@@ -1096,7 +1111,7 @@ namespace LiftingCrane
 
             Gl.glPushMatrix();
             Gl.glPushMatrix();
-            Gl.glTranslated(-150, -300, 140);
+            Gl.glTranslated(160, -170, 140);
             Gl.glScaled(60, 60, 0);
             DrawTexture();
             Gl.glPopMatrix();

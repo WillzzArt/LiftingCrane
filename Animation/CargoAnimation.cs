@@ -7,7 +7,7 @@ namespace LiftingCrane.Animation
     {
         // экземпляра класса Explosion
         //private Explosion BOOOOM_1 = new Explosion(_translateCargoX, 10, 1, 300, 500);
-        private double _translateCargoX, _translateCargoY, _translateCargoZ;
+        private double _translateCargoX, _translateCargoY, _translateCargoZ, minZ;
         private float lastTime = 0;
 
         // вектор гравитации
@@ -43,7 +43,12 @@ namespace LiftingCrane.Animation
             get { return _angle; }
         }
 
-        public void StartFalling(double angle, double radiusTralley, double height, float startTime)
+        public double GetMinZ
+        {
+            get { return minZ; }
+        }
+
+        public void StartFalling(double angle, double radiusTralley, double height, float startTime, bool isAboveTheBuilding)
         {
             Random rnd = new Random();
             lastTime = startTime;
@@ -68,11 +73,16 @@ namespace LiftingCrane.Animation
             _radiusTralley = radiusTralley;
             _height = height;
 
-            if (218 - _height * 10 > 100)
-            {
+            if (218 - _height * 10 > 100 && !isAboveTheBuilding)
                 _isBroken = true;
-            }
+            else if (218 - _height * 10 > 200 && isAboveTheBuilding)
+                _isBroken = true;
 
+
+            if (isAboveTheBuilding)
+                minZ = 160;
+            else
+                minZ = 65;
             
             
         }
@@ -111,7 +121,7 @@ namespace LiftingCrane.Animation
                     power[a] += amplification * dTime * 100;
                 }
 
-                if (_translateCargoZ > 70)
+                if (_translateCargoZ > minZ)
                 {
                     _translateCargoZ -= (speed[a] * dTime + (Grav[a] + power[a]) * dTime * dTime);
                 }
@@ -123,7 +133,11 @@ namespace LiftingCrane.Animation
                     }
                     else
                     {
-                        _translateCargoZ = 10;
+                        if (minZ == 65)
+                            _translateCargoZ = 0;
+                        else
+                            _translateCargoZ = 155;
+
                         cargoStatus = CargoStatus.Falled;
                     }
                     
@@ -132,10 +146,5 @@ namespace LiftingCrane.Animation
                 speed[a] += (Grav[a] + power[a]) * dTime;
             }
         }
-
-        /*public void Boom(float globalTime)
-        {
-            BOOOOM_1.Calculate(globalTime);
-        }*/
     }
 }

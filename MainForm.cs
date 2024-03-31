@@ -28,12 +28,15 @@ namespace LiftingCrane
 
         bool _isBoom = false;
         bool _isInCrane = false;
+        bool _isCargoRight = false;
+        bool _isCargoLeft = false;
 
         CargoStatus cargoStatus;
 
         /*bool _isTakedCargo = false;
         bool _isAbondonedCargo = false;
         bool _isFalledCargo = false;*/
+        bool _isAboveTheBuilding = false;
 
         CargoAnimation cargo;
 
@@ -123,8 +126,7 @@ namespace LiftingCrane
         }
 
         private void button6_Click(object sender, EventArgs e)
-        {
-            //_isTakedCargo = true;
+        {;
             cargoStatus = CargoStatus.Taked;
             button6.Visible = false;
             button7.Visible = true;
@@ -132,12 +134,11 @@ namespace LiftingCrane
 
         private void button7_Click(object sender, EventArgs e)
         {
-            //_isTakedCargo = false;
-            //_isAbondonedCargo = true;
+            cargo = new CargoAnimation();
             cargoStatus = CargoStatus.Abondoned;
             button6.Visible = true;
             button7.Visible = false;
-            cargo.StartFalling(-angle, _translateTralley, _cableHeight, _globalTime);
+            cargo.StartFalling(-angle, _translateTralley, _cableHeight, _globalTime, _isAboveTheBuilding);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -167,6 +168,17 @@ namespace LiftingCrane
             about.ShowDialog();
         }
 
+        private void button8_Click(object sender, EventArgs e)
+        {
+            cargoStatus = CargoStatus.None;
+            button8.Visible = false;
+            label16.Visible = false;
+            button6.Visible = true;
+            _isBoom = false;
+        }
+
+        
+
         private void AnT_KeyDown(object sender, KeyEventArgs e)
         {
             label5.Text = _translateY.ToString();
@@ -175,6 +187,8 @@ namespace LiftingCrane
             label4.Text = _translateZ.ToString();
             label9.Text = _rotateX.ToString();
             label14.Text = angle.ToString();
+            label18.Text = _translateTralley.ToString();
+            label17.Text = _cableHeight.ToString();
 
 
             if (!_isInCrane)
@@ -214,31 +228,64 @@ namespace LiftingCrane
             }
             else
             {
+                if (angle >= 319 && angle <= 340 && _translateTralley <= -160)
+                    _isAboveTheBuilding = true;
+                else
+                    _isAboveTheBuilding = false;
+
                 if (e.KeyCode == Keys.A)
                 {
-                    angle -= 1;
-                    _angleCam += _camSpeed;
+                    if (!_isAboveTheBuilding && angle == 341 && _cableHeight >= 7 && !_isCargoLeft && _translateTralley <= -170)
+                    {
+                        _isCargoRight = true;
+                        angle = 341;
+                    }
+                    else
+                    {
+                        _isCargoRight = false;
+                        angle -= 1;
+                        _angleCam += _camSpeed;
 
-                    if (comboBox1.SelectedIndex != 2)
-                        _rotateZ -= 1;
+                        if (comboBox1.SelectedIndex != 2)
+                            _rotateZ -= 1;
+                    }
+
+                    if (angle < 0) angle = 360;
+                    
                 }
 
 
                 if (e.KeyCode == Keys.D)
                 {
-                    angle += 1;
-                    _angleCam -= _camSpeed;
+                    if (!_isAboveTheBuilding && angle == 318 && _cableHeight >= 7 && !_isCargoRight && _translateTralley <= -170)
+                    {
+                        angle = 318;
+                        _isCargoLeft = true;
+                    }
+                    else
+                    {
+                        _isCargoLeft = false;
+                        angle += 1;
+                        _angleCam -= _camSpeed;
 
-                    if (comboBox1.SelectedIndex != 2)
-                        _rotateZ += 1;
+                        if (comboBox1.SelectedIndex != 2)
+                            _rotateZ += 1;
+                    }
+
+                    if (angle > 360) angle = 0;
                 }
 
                 if (e.KeyCode == Keys.W)
                 {
-                    if (_translateTralley <= -200)
-                        _translateTralley = -200;
+                    if (_isAboveTheBuilding && _cableHeight >= 7)
+                        _translateTralley = -160;
                     else
-                        _translateTralley -= 2;
+                    {
+                        if (_translateTralley <= -200)
+                            _translateTralley = -200;
+                        else
+                            _translateTralley -= 2;
+                    }
                 }
 
                 if (e.KeyCode == Keys.S)
@@ -251,7 +298,9 @@ namespace LiftingCrane
 
                 if (e.KeyCode == Keys.ShiftKey)
                 {
-                    if (_cableHeight >= 22)
+                    if (_isAboveTheBuilding && _cableHeight >= 6)
+                        _cableHeight = 6;
+                    if (!_isAboveTheBuilding && _cableHeight >= 22)
                         _cableHeight = 22;
                     else
                         _cableHeight += 0.5;
@@ -327,7 +376,7 @@ namespace LiftingCrane
             Gl.glLoadIdentity();
 
             ModelDrawer.InitModelDrawer();
-            cargo = new CargoAnimation();
+            
             cargoStatus = CargoStatus.None;
 
             ProgrammDrawingEngine = new AnEngine(AnT.Width, AnT.Height, AnT.Width, AnT.Height);
@@ -401,17 +450,20 @@ namespace LiftingCrane
                         {
                             Random rnd = new Random();
 
-                            var x = -15 + (cargo.GetTranslateCargoY) * Math.Cos(cargo.GetAngle * 2 * Math.PI / 360.0);
-                            var y = -90 + (cargo.GetTranslateCargoY) * Math.Sin(cargo.GetAngle * 2 * Math.PI / 360.0);
+                            var x = 15 + (-cargo.GetTranslateCargoY) * Math.Sin(cargo.GetAngle * 2 * Math.PI / 360.0);
+                            var y = 90 + (-cargo.GetTranslateCargoY) * Math.Cos(cargo.GetAngle * 2 * Math.PI / 360.0);
 
-                            BOOOOM_1.SetNewPosition((float)x, (float)y, 10);
+                            BOOOOM_1.SetNewPosition(x, cargo.GetTranslateCargoZ, y);
 
                             BOOOOM_1.SetNewPower(rnd.Next(20, 80));
                             BOOOOM_1.Boooom(_globalTime);
                             Gl.glPopMatrix();
                             _isBoom = true;
+                            button6.Visible = false;
+                            button8.Visible = true;
+                            label16.Visible = true;
                             soundPlayer = new SoundPlayer(@"falled.wav");
-                            soundPlayer.Play();
+                            //soundPlayer.Play();
                         }
 
                         break;
@@ -426,12 +478,9 @@ namespace LiftingCrane
 
         }
 
-        double[] modelviewMatrix = new double[16];
-
         private void RenderTimer_Tick(object sender, EventArgs e)
         {
             _globalTime += (float)RenderTimer.Interval / 1000;
-            label15.Text = _globalTime.ToString();
             Draw();
         }
     }
