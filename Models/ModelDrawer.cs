@@ -17,6 +17,8 @@ namespace LiftingCrane
         static uint sand = 0;
         static uint[] cargos = new uint[3];
 
+        static int cargoTexture = 0;
+
         //Инициализация переменных класса
         public static void InitModelDrawer()
         {
@@ -41,6 +43,12 @@ namespace LiftingCrane
             cargos[1] = TextureMaker.LoadTexture("concrete.jpg");
             cargos[2] = TextureMaker.LoadTexture("woods.jpg");
         }
+
+        public static void InitCargo()
+        {
+            cargoTexture = rnd.Next(0, 3);
+        }
+
         private static void DrawTexture()
         {
             Gl.glBegin(Gl.GL_QUADS);
@@ -932,7 +940,7 @@ namespace LiftingCrane
         {
             Gl.glPushMatrix();
             Gl.glEnable(Gl.GL_TEXTURE_2D);
-            Gl.glBindTexture(Gl.GL_TEXTURE_2D, cargos[0]);
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, cargos[cargoTexture]);
             var angle = 0;
             for (int i = 0; i < 5; i++)
             {
@@ -1048,18 +1056,6 @@ namespace LiftingCrane
                 Gl.glPopMatrix();
                 Gl.glDisable(Gl.GL_TEXTURE_2D);
             }
-            
-            /*for (int i = 0; i < 3; i ++)
-            {
-                Gl.glPushMatrix();
-                Gl.glColor3f(0.91f, 0.76f, 0.007f);
-                Gl.glRotated(-61 + (i + 15) * 41, 0, 0, 1);
-                Gl.glTranslated(-150, 0, -15);
-                Gl.glScaled(2 + i, 6 - i, 3);
-                Glut.glutSolidSphere(10, 32, 32);
-                Gl.glPopMatrix();
-            }*/
-
         }
 
         public static void DrawBuilding()

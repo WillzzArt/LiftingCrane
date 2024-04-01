@@ -71,12 +71,14 @@
             this.trackBar5 = new System.Windows.Forms.TrackBar();
             this.button10 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.trackBar6 = new System.Windows.Forms.TrackBar();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar6)).BeginInit();
             this.SuspendLayout();
             // 
             // AnT
@@ -327,7 +329,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(1198, 253);
+            this.button4.Location = new System.Drawing.Point(1200, 252);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 23;
@@ -376,7 +378,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.label16.Location = new System.Drawing.Point(1195, 129);
+            this.label16.Location = new System.Drawing.Point(1188, 129);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(101, 17);
             this.label16.TabIndex = 28;
@@ -385,7 +387,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(1194, 149);
+            this.button8.Location = new System.Drawing.Point(1187, 149);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(102, 23);
             this.button8.TabIndex = 29;
@@ -491,7 +493,7 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(1191, 602);
+            this.button10.Location = new System.Drawing.Point(1200, 593);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(75, 23);
             this.button10.TabIndex = 40;
@@ -516,11 +518,22 @@
             this.comboBox2.TabStop = false;
             this.comboBox2.Visible = false;
             // 
+            // trackBar6
+            // 
+            this.trackBar6.Location = new System.Drawing.Point(1195, 622);
+            this.trackBar6.Maximum = 20;
+            this.trackBar6.Name = "trackBar6";
+            this.trackBar6.Size = new System.Drawing.Size(104, 45);
+            this.trackBar6.TabIndex = 42;
+            this.trackBar6.Value = 20;
+            this.trackBar6.Scroll += new System.EventHandler(this.trackBar6_Scroll);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1450, 813);
+            this.Controls.Add(this.trackBar6);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.trackBar5);
@@ -570,6 +583,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar6)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -619,6 +633,7 @@
         private System.Windows.Forms.TrackBar trackBar5;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.TrackBar trackBar6;
     }
 }
 

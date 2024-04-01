@@ -18,6 +18,8 @@ namespace LiftingCrane
         double _translateX = 0, _translateY = 0, _translateZ = -20, zoom = 1;
         float _globalTime = 0;
 
+        private float[] _abmbientIntesive = { 1, 1, 1, 1 };
+
         int a, b, c, d;
 
         // оси вращения
@@ -221,6 +223,17 @@ namespace LiftingCrane
             surface = new SurfaceRotation(a, b, c, d);
         }
 
+        private void trackBar6_Scroll(object sender, EventArgs e)
+        {
+            var inentsiv = -1 + trackBar6.Value / 10f;
+
+            _abmbientIntesive[0] = inentsiv;
+            _abmbientIntesive[1] = inentsiv;
+            _abmbientIntesive[2] = inentsiv;
+
+            Gl.glLightModelfv(Gl.GL_LIGHT_MODEL_AMBIENT, _abmbientIntesive);
+        }
+
         private void trackBar3_Scroll(object sender, EventArgs e)
         {
             b = trackBar2.Value;
@@ -242,6 +255,7 @@ namespace LiftingCrane
         private void button8_Click(object sender, EventArgs e)
         {
             cargoStatus = CargoStatus.None;
+            ModelDrawer.InitCargo();
             button8.Visible = false;
             label16.Visible = false;
             button6.Visible = true;
@@ -440,7 +454,11 @@ namespace LiftingCrane
             Gl.glMatrixMode(Gl.GL_PROJECTION);
 
             Gl.glEnable(Gl.GL_BLEND);
+            Gl.glEnable(Gl.GL_COLOR_MATERIAL);
             Gl.glEnable(Gl.GL_DEPTH_TEST);
+            Gl.glEnable(Gl.GL_LIGHTING);
+            Gl.glLightModelfv(Gl.GL_LIGHT_MODEL_AMBIENT, _abmbientIntesive);
+            //Gl.glEnable(Gl.GL_LIGHT0);
 
             // очистка матрицы
             Gl.glLoadIdentity();
@@ -452,6 +470,7 @@ namespace LiftingCrane
             Gl.glLoadIdentity();
 
             ModelDrawer.InitModelDrawer();
+            ModelDrawer.InitCargo();
 
             cargoStatus = CargoStatus.None;
 
